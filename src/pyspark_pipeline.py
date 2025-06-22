@@ -1,11 +1,16 @@
 """PySpark version of the fraud detection pipeline (simplified)."""
 
+import os
 import pyspark
 from pyspark.sql import SparkSession
 from pyspark.ml import Pipeline
 from pyspark.ml.feature import VectorAssembler, StandardScaler
 from pyspark.ml.classification import RandomForestClassifier
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import classification_report, confusion_matrix, roc_curve
 
 
 def run(csv_path: str, results_dir: str = 'results'):
@@ -20,9 +25,46 @@ def run(csv_path: str, results_dir: str = 'results'):
     model = pipeline.fit(df)
 
     predictions = model.transform(df)
-    evaluator = BinaryClassificationEvaluator(labelCol='Class')
+    evaluator = BinaryClassificationEvaluator(labelCol='Class', rawPredictionCol='probability')
     auc = evaluator.evaluate(predictions)
-    print('AUC:', auc)
+
+    os.makedirs(results_dir, exist_ok=True)
+
+    pdf = predictions.select('Class', 'prediction', 'probability').toPandas()
+    pdf['prob1'] = pdf['probability'].apply(lambda v: float(v[1]))
+
+    y_true = pdf['Class']
+    y_pred = pdf['prediction']
+    y_prob = pdf['prob1']
+
+    report = classification_report(y_true, y_pred, output_dict=True)
+    cm = confusion_matrix(y_true, y_pred)
+    fpr, tpr, _ = roc_curve(y_true, y_prob)
+
+    metrics_path = os.path.join(results_dir, 'pyspark_metrics.txt')
+    with open(metrics_path, 'w') as f:
+        f.write(f'AUC: {auc}\n')
+        f.write(pd.DataFrame(report).transpose().to_string())
+        f.write('\nConfusion Matrix:\n')
+        f.write(np.array2string(cm))
+
+    plt.figure()
+    plt.plot(fpr, tpr, label=f'ROC curve (area = {auc:0.2f})')
+    plt.plot([0, 1], [0, 1], 'k--')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic')
+    plt.legend(loc='lower right')
+    plt.savefig(os.path.join(results_dir, 'pyspark_roc_curve.png'))
+
+    plt.figure()
+    plt.matshow(cm, cmap=plt.cm.Blues)
+    plt.title('Confusion Matrix')
+    plt.colorbar()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.savefig(os.path.join(results_dir, 'pyspark_confusion_matrix.png'))
+
     spark.stop()
 
 

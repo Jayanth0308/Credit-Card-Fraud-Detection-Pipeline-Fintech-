@@ -12,9 +12,9 @@ This repository provides an example pipeline for detecting fraudulent credit car
 - `imbalanced-learn`
 - `matplotlib`
 
-These dependencies can be installed with:
+### Optional PySpark
 
-```bash
+For large-scale processing, you can adapt the code to PySpark. A basic structure is provided in `src/pyspark_pipeline.py`. This script now also saves evaluation metrics and plots in the specified results directory.
 pip install pandas numpy scikit-learn imbalanced-learn matplotlib
 ```
 
