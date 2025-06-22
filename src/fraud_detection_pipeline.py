@@ -75,6 +75,7 @@ def evaluate(model: RandomForestClassifier, X_test: np.ndarray, y_test: np.ndarr
     plt.title('Receiver Operating Characteristic')
     plt.legend(loc='lower right')
     plt.savefig(os.path.join(results_dir, 'roc_curve.png'))
+    plt.close()
 
     plt.figure()
     plt.matshow(cm, cmap=plt.cm.Blues)
@@ -83,6 +84,7 @@ def evaluate(model: RandomForestClassifier, X_test: np.ndarray, y_test: np.ndarr
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.savefig(os.path.join(results_dir, 'confusion_matrix.png'))
+    plt.close()
 
 
 def run(csv_path: str, results_dir: str = 'results'):
