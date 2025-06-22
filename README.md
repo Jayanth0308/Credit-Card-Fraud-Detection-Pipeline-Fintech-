@@ -37,12 +37,6 @@ The script will preprocess the data, handle class imbalance with SMOTE, train a 
 - `roc_curve.png` – ROC curve plot.
 - `confusion_matrix.png` – Confusion matrix visualization.
 
-## Optional: PySpark
-
-For large-scale processing, you can adapt the code to PySpark. A basic structure is provided in `src/pyspark_pipeline.py`. This script now also saves evaluation metrics and plots in the specified results directory.
-=======
-# Credit-Card-Fraud-Detection-Pipeline-Fintech-
-
 ## Setup
 
 Install the required dependencies using:
