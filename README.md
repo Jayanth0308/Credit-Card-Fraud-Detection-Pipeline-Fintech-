@@ -1,3 +1,4 @@
+
 # Credit Card Fraud Detection Pipeline
 
 This repository provides an example pipeline for detecting fraudulent credit card transactions. It uses the [Kaggle credit card fraud dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud). The dataset is **not** included in this repository; download `creditcard.csv` from Kaggle and place it in the `data/` directory before running the pipeline.
@@ -39,3 +40,14 @@ The script will preprocess the data, handle class imbalance with SMOTE, train a 
 ## Optional: PySpark
 
 For large-scale processing, you can adapt the code to PySpark. A basic structure is provided in `src/pyspark_pipeline.py`.
+=======
+# Credit-Card-Fraud-Detection-Pipeline-Fintech-
+
+## Setup
+
+Install the required dependencies using:
+
+```bash
+pip install -r requirements.txt
+```
+
