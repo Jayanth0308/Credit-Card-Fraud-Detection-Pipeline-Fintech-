@@ -39,7 +39,7 @@ The script will preprocess the data, handle class imbalance with SMOTE, train a 
 
 ## Optional: PySpark
 
-For large-scale processing, you can adapt the code to PySpark. A basic structure is provided in `src/pyspark_pipeline.py`.
+For large-scale processing, you can adapt the code to PySpark. A basic structure is provided in `src/pyspark_pipeline.py`. This script now also saves evaluation metrics and plots in the specified results directory.
 =======
 # Credit-Card-Fraud-Detection-Pipeline-Fintech-
 
